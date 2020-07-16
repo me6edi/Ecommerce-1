@@ -80,6 +80,7 @@ def updateItem(request):
 
 from django.views.decorators.csrf import csrf_exempt
 @csrf_exempt
+
 def processOrder(request):
     transaction_id = datetime.datetime.now().timestamp()
     data = json.loads(request.body)
@@ -95,7 +96,7 @@ def processOrder(request):
         order.save()
 
         if order.shipping == True:
-            shippingAddress.objects.create(   
+            ShippingAddress.objects.create(   
                 customer = customer,
                 order = order,
                 address = data['shipping']['address'],
@@ -104,7 +105,6 @@ def processOrder(request):
                 zipcode = data['shipping']['zipcode'],
 
             )
-
     else:
         print('User is not logged in..')
     return JsonResponse('Payment complete!', safe=False)
